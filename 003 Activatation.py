@@ -1,3 +1,4 @@
+#%%
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -208,10 +209,10 @@ class Layers:
 
             for x,t in data:
 
-                y = model(x)
+                y = self(x)
                 l_,dout = Softmax(y,t)
                 l += l_
-                model.backward(dout)
+                self.backward(dout)
                 optimizer(self.ps,self.gs)
         
             loss += [l/iter]
@@ -234,23 +235,9 @@ def Softmax(y,t):
 
     return loss,dout
 
-def Model(y,act=Sigmoid(),epochs=100,lr=0.1,batch_size=10):
+def Model(data,layers,epochs=100,lr=0.1,batch_size=10):
     
-    x = np.array([[0,0],[0,1],[1,0],[1,1]])
 
-    
-    dataset = Dataset(x,y,size=10,scale=0.1)
-    data = DataLoader(dataset=dataset,batch_size=batch_size)
-
-    d_in = x.shape[1]
-    d_h = 4*d_in
-    d_out = y.max()+1
-    
-    layers1 = [
-        Linear(d_in,d_h),
-        act,
-        Linear(d_h,d_out)
-    ]
     model = Layers(layers)
     loss = model.fit(data,epochs=epochs,lr=lr)
     return loss    
@@ -270,20 +257,36 @@ d_out = y.max()+1
 
 layers = [
     Linear(d_in,d_h),
-    LeakyReLU(),
+    Sigmoid(),
     Linear(d_h,d_out)
 ]
 model = Layers(layers)
 loss = model.fit(data,epochs=30,lr=0.1)
 pred = model.pred(x)
 
-epochs=100
+epochs=50
 lr =0.1
 batch_size=10
 
-loss1=Model(y,act=Sigmoid(),epochs=epochs,lr=lr,batch_size=batch_size)
-loss2=Model(y,act=ReLU(),epochs=epochs,lr=lr,batch_size=batch_size)
-loss3=Model(y,act=LeakyReLU(),epochs=epochs,lr=lr,batch_size=batch_size)
+layers1 = [
+    Linear(d_in,d_h),
+    Sigmoid(),
+    Linear(d_h,d_out)
+]
+layers2 = [
+    Linear(d_in,d_h),
+    ReLU(),
+    Linear(d_h,d_out)
+]
+
+layers3 = [
+    Linear(d_in,d_h),
+    LeakyReLU(),
+    Linear(d_h,d_out)
+]
+loss1=Model(data,layers1,epochs=epochs,lr=lr,batch_size=batch_size)
+loss2=Model(data,layers2,epochs=epochs,lr=lr,batch_size=batch_size)
+loss3=Model(data,layers3,epochs=epochs,lr=lr,batch_size=batch_size)
 
 fig,ax = plt.subplots()
 plt.title('Loss Fuction')
