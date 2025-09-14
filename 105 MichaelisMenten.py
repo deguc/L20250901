@@ -41,7 +41,7 @@ S,ES,P = sol.y
 fig = plt.figure(figsize=(6,4))
 plt.plot(t,ES/E0,color='red',label='[ES]/E0')
 plt.plot(t,P/S0,color='black',label='[P]/S0')
-plt.plot(t,(S+ES)/S0,color='blue',label='([S]+[ES]/S0')
+plt.plot(t,(S+ES)/S0,color='blue',label='([S]+[ES])/S0')
 plt.title('Michaelis-Menten')
 plt.xlabel('t')
 plt.ylabel('Concentration')
