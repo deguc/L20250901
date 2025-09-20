@@ -26,7 +26,7 @@ def pauling(mu,J):
 p = np.logspace(-3,-0.7,base=10)
 mu = np.log(p)
 
-plt.title('AlLosteric Effect')
+plt.title('Allosteric Effect')
 plt.xticks([0,0.1,0.2])
 plt.yticks([0,2.0,4.0])
 plt.xlabel(r'$p(o_2)/p_0$')
